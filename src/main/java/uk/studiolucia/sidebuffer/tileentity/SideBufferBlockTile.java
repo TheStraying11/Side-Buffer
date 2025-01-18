@@ -3,6 +3,7 @@ package uk.studiolucia.sidebuffer.tileentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -81,6 +82,7 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
+
         CompoundTag sideBufferData = new CompoundTag();
         CompoundTag inventory = new CompoundTag();
 
@@ -132,10 +134,19 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
     }
 
     @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
+    }
 
     @Override
     public @NotNull Component getDisplayName() {

@@ -52,7 +52,8 @@ public class SideBufferBlock extends Block implements EntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (!(blockEntity instanceof SideBufferBlockTile sideBufferBlockTile)) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-        if (player instanceof ServerPlayer sPlayer) sPlayer.openMenu(sideBufferBlockTile);
+        //if (player instanceof ServerPlayer sPlayer) sPlayer.openMenu(sideBufferBlockTile);
+
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
