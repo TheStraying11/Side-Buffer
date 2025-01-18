@@ -89,18 +89,48 @@ public class SideBufferMenu extends AbstractContainerMenu {
         int width = 18;
         int columns = 9;
 
-        sideBufferBlockTile.getOptionals().forEach((side, optional) -> {
-            optional.ifPresent(inventory -> {
-                for (int column = 0; column < columns; column++) {
-                    addSlot(new SlotItemHandler(inventory, column, xPos + (column * width), yPositions.get(side)));
-                }
-            });
-        });
+        sideBufferBlockTile.getOptionals().forEach((side, optional) -> optional.ifPresent(inventory -> {
+            for (int column = 0; column < columns; column++) {
+                addSlot(new SlotItemHandler(inventory, column, xPos + (column * width), yPositions.get(side)));
+            }
+        }));
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int i) {
-        return null;
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int pIndex) {
+        int globalInvSize = 35 + (9*6);
+        Slot fromSlot = getSlot(pIndex);
+        ItemStack fromStack = fromSlot.getItem();
+
+        if (fromStack.getCount() <= 0) {
+            fromSlot.set(ItemStack.EMPTY);
+        }
+
+        if (!fromSlot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack copy = fromStack.copy();
+
+        if (pIndex <= 35) {
+            if (!moveItemStackTo(fromStack, 36, globalInvSize, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        else if (pIndex <= globalInvSize) {
+            if (!moveItemStackTo(fromStack, 0, 35, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        else {
+            System.err.printf("Invalid slot index in quickMoveStack: %d%n", pIndex);
+            return ItemStack.EMPTY;
+        }
+
+        fromSlot.setChanged();
+        fromSlot.onTake(player, fromStack);
+
+        return copy;
     }
 
     @Override
@@ -108,6 +138,7 @@ public class SideBufferMenu extends AbstractContainerMenu {
         return stillValid(this.levelAccess, player, Register.SIDE_BUFFER_BLOCK.get());
     }
 
+    @SuppressWarnings("unused")
     public SideBufferBlockTile getBlockEntity() {
         return sideBufferBlockTile;
     }
