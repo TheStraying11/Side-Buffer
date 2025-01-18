@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sidebuffer:block/side_buffer"
+    }
+  }
+}
