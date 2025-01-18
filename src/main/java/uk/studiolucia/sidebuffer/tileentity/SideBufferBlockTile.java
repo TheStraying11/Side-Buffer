@@ -11,7 +11,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.studiolucia.sidebuffer.SideBuffer;
@@ -52,13 +50,17 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
                 entry(Direction.WEST , new SidedItemStackHandler(this, 9, Direction.WEST))
         ));
 
-        itemStackHandlers.forEach((direction, sidedItemStackHandler) -> {
-            optionals.put(direction, LazyOptional.of(() -> sidedItemStackHandler));
-        });
+        itemStackHandlers.forEach((direction, sidedItemStackHandler) ->
+                optionals.put(direction, LazyOptional.of(() -> sidedItemStackHandler)));
     }
 
     @Override
-    public void tick(@NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState blockState, @NotNull SideBufferBlockTile sideBufferBlockTile) {
+    public void tick(
+            @NotNull Level level,
+            @NotNull BlockPos blockPos,
+            @NotNull BlockState blockState,
+            @NotNull SideBufferBlockTile sideBufferBlockTile
+    ) {
         if (this.level == null) return;
         if (this.level.isClientSide()) return;
 
@@ -72,9 +74,8 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
 
         CompoundTag inventory = sideBufferData.getCompound("Inventory");
 
-        this.itemStackHandlers.forEach((side, sidedItemStackHandler) -> {
-            sidedItemStackHandler.deserializeNBT(inventory.getCompound(side.toString()));
-        });
+        this.itemStackHandlers.forEach((side, sidedItemStackHandler) ->
+                sidedItemStackHandler.deserializeNBT(inventory.getCompound(side.toString())));
     }
 
     @Override
@@ -84,9 +85,8 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
         CompoundTag inventory = new CompoundTag();
 
         //for (Map.Entry<> : this.itemStackHandlers.) {
-        this.itemStackHandlers.forEach((side, sidedItemStackHandler) -> {
-            inventory.put(side.toString(), sidedItemStackHandler.serializeNBT());
-        });
+        this.itemStackHandlers.forEach((side, sidedItemStackHandler) ->
+                inventory.put(side.toString(), sidedItemStackHandler.serializeNBT()));
 
         sideBufferData.put("Inventory", inventory);
 
@@ -118,6 +118,7 @@ public class SideBufferBlockTile extends BlockEntity implements BlockEntityTicke
         return this.optionals;
     }
 
+    @SuppressWarnings("unused")
     @Nullable
     public ItemStack getStack(int slot, Direction side) {
         return itemStackHandlers.get(side).getStackInSlot(slot);
