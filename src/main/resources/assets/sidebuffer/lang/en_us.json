@@ -1,5 +1,11 @@
 {
   "block.sidebuffer.side_buffer": "Side Buffer",
   "block.sidebuffer.side_buffer.title": "Side Buffer",
-  "itemGroup.side_buffer": "Side Buffer"
+  "itemGroup.side_buffer": "Side Buffer",
+  "sidebuffer.label.up": "U",
+  "sidebuffer.label.down": "D",
+  "sidebuffer.label.north": "N",
+  "sidebuffer.label.south": "S",
+  "sidebuffer.label.east": "E",
+  "sidebuffer.label.west": "W"
 }

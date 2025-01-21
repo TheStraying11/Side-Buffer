@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.studiolucia.sidebuffer.handlers.SidedItemStackHandler;
@@ -52,7 +53,11 @@ public class SideBufferBlock extends Block implements EntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (!(blockEntity instanceof SideBufferBlockTile sideBufferBlockTile)) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-        //if (player instanceof ServerPlayer sPlayer) sPlayer.openMenu(sideBufferBlockTile);
+        if (player instanceof ServerPlayer sPlayer) {
+            NetworkHooks.openScreen(sPlayer, sideBufferBlockTile, blockPos);//sPlayer.openMenu(sideBufferBlockTile);
+            return InteractionResult.SUCCESS;
+        }
+
 
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }

@@ -1,0 +1,11 @@
+{
+  "block.sidebuffer.side_buffer": "Buffer de apoyo",
+  "block.sidebuffer.side_buffer.title": "Buffer de apoyo",
+  "itemGroup.side_buffer": "Buffer de apoyo",
+  "sidebuffer.label.up": "A",
+  "sidebuffer.label.down": "B",
+  "sidebuffer.label.north": "N",
+  "sidebuffer.label.south": "S",
+  "sidebuffer.label.east": "E",
+  "sidebuffer.label.west": "O"
+}

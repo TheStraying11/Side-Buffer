@@ -1,5 +1,6 @@
 package uk.studiolucia.sidebuffer.gui;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -46,8 +47,12 @@ public class SideBufferMenu extends AbstractContainerMenu {
         createSideBufferInventory(sideBufferBlockTile);
     }
 
-    public SideBufferMenu(int i, Inventory inventory, FriendlyByteBuf additionalData) {
-        this(i, inventory, inventory.player.level().getBlockEntity(additionalData.readBlockPos()));
+    public SideBufferMenu(int i, Inventory inventory, BlockPos blockPos) {
+        this(i, inventory, inventory.player.level().getBlockEntity(blockPos));
+    }
+
+    public SideBufferMenu(int i, Inventory inventory, FriendlyByteBuf friendlyByteBuf) {
+        this(i, inventory, inventory.player.level().getBlockEntity(friendlyByteBuf.readBlockPos()));
     }
 
     private void createPlayerHotBar(@NotNull Inventory inventory) {
@@ -68,10 +73,11 @@ public class SideBufferMenu extends AbstractContainerMenu {
         int columns = 9;
         int rows = 3;
         int startingSlot = 9;
+        int height = 18;
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                addSlot(new Slot(inventory, startingSlot + column + (row * columns), xPos + (column * width), yPos));
+                addSlot(new Slot(inventory, startingSlot + column + (row * columns), xPos + (column * width), yPos + (row * height)));
             }
         }
     }

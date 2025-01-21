@@ -1,0 +1,11 @@
+{
+  "block.sidebuffer.side_buffer": "Seitenpuffer",
+  "block.sidebuffer.side_buffer.title": "Seitenpuffer",
+  "itemGroup.side_buffer": "Seitenpuffer",
+  "sidebuffer.label.up": "H",
+  "sidebuffer.label.down": "R",
+  "sidebuffer.label.north": "N",
+  "sidebuffer.label.south": "S",
+  "sidebuffer.label.east": "O",
+  "sidebuffer.label.west": "W"
+}
